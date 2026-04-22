@@ -1,0 +1,9 @@
+# Reglas udev para vasak-impulse-daemon
+# Permite al grupo 'input' acceder a los dispositivos de /dev/input
+# sin necesidad de sudo
+
+# Dar acceso al grupo 'input' para todos los dispositivos event*
+SUBSYSTEMS=="input", KERNEL=="event[0-9]*", MODE="0660", GROUP="input"
+
+# Dar acceso al grupo 'input' para acceso general
+SUBSYSTEMS=="input", ACTION=="add", KERNEL=="input[0-9]*", MODE="0755", GROUP="input"

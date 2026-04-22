@@ -1,0 +1,17 @@
+[Unit]
+Description=Vasak Impulse Daemon - Keyboard Shortcut Handler
+Documentation=https://github.com/VasakOS/vasak-impulse-daemon
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/vasak-impulse-daemon
+Restart=always
+RestartSec=3
+Environment="RUST_BACKTRACE=1"
+# El daemon se ejecuta como root para acceder a /dev/input
+# Internamente detecta el usuario real con SUDO_USER de systemd
+User=root
+
+[Install]
+WantedBy=multi-user.target
