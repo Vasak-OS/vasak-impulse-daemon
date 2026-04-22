@@ -4,6 +4,14 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 
+[lib]
+name = "vasak_impulse_daemon"
+path = "src/lib.rs"
+
+[[bin]]
+name = "vasak-impulse-daemon"
+path = "src/main.rs"
+
 [dependencies]
 evdev = "0.13"
 notify = "8"
