@@ -1,0 +1,27 @@
+[
+  {
+    "keys": "CTRL+KEY_A",
+    "action": "launch",
+    "target": "firefox"
+  },
+  {
+    "keys": "CTRL+ALT+KEY_T",
+    "action": "launch",
+    "target": "x-terminal-emulator"
+  },
+  {
+    "keys": "CTRL+SHIFT+KEY_P",
+    "action": "launch",
+    "target": "systemctl poweroff"
+  },
+  {
+    "keys": "SUPER",
+    "action": "launch",
+    "target": "rofi -show drun"
+  },
+  {
+    "keys": "CTRL+SHIFT+KEY_L",
+    "action": "launch",
+    "target": "xflock4"
+  }
+]
