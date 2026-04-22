@@ -1,13 +1,15 @@
 # vasak-impulse-daemon
 
-Daemon en Rust para escuchar teclados de Linux desde `/dev/input` con `evdev` y preparar mapeos de combinaciones contra un archivo JSON.
+Daemon en Rust para escuchar teclados de Linux desde `/dev/input`, detectar combinaciones de teclas y ejecutar acciones configuradas en JSON.
 
 ## Que hace
 
 - Detecta dispositivos de entrada tipo teclado en `/dev/input`
-- Lee eventos de teclas en un loop bloqueante
-- Mantiene el estado de teclas activas para detectar combinaciones como `Shift + KEY_F1`
-- Carga bindings desde JSON con `serde` y `serde_json`
+- Lee eventos de teclas en un loop bloqueante con `evdev`
+- Mantiene el estado de teclas activas para detectar combinaciones como `CTRL+KEY_A`
+- Carga shortcuts desde `~/.config/vasak/shortcut.json`
+- Recarga la configuracion automaticamente cuando el archivo cambia
+- Ejecuta el `target` asociado con `std::process::Command`
 
 ## Requisitos
 
@@ -24,25 +26,27 @@ cargo build
 ## Desarrollo
 
 ```bash
-cargo run -- config/bindings.example.json
+cargo run
 ```
 
-Si no pasas un archivo, el daemon intenta usar `bindings.json` en el directorio actual.
+El daemon crea automaticamente `~/.config/vasak/shortcut.json` si no existe y lo inicializa con un arreglo vacio.
 
 ## Formato JSON
 
+El archivo debe contener un arreglo de objetos con esta forma:
+
 ```json
-{
-  "bindings": [
-    {
-      "combo": "KEY_LEFTSHIFT+KEY_F1",
-      "action": "open_help"
-    }
-  ]
-}
+[
+  {
+    "keys": "CTRL+KEY_A",
+    "action": "launch",
+    "target": "firefox"
+  }
+]
 ```
 
 ## Notas
 
 - El detector abre todos los nodos `event*` de `/dev/input` y filtra los que parecen teclado.
-- Las combinaciones se normalizan antes de compararlas, por lo que el orden en el JSON debe seguir la forma canonica que imprime el programa.
+- Las combinaciones se normalizan antes de compararlas, por lo que `keys` debe usar nombres de `KeyCode` como `KEY_LEFTSHIFT` o `KEY_F1`.
+- Si una recarga del JSON falla mientras la app lo escribe, el daemon conserva la configuracion anterior y sigue ejecutandose.
